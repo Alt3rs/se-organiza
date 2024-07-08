@@ -22,9 +22,12 @@ export function InsertActivityForm(){
                     <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="0">Educação</SelectItem>
-                    <SelectItem value="1">Entretenimento</SelectItem>
+                    <SelectItem value="0">Contas</SelectItem>
+                    <SelectItem value="1">Educação</SelectItem>
+                    <SelectItem value="2">Entretenimento</SelectItem>
                     <SelectItem value="3">Alimentação</SelectItem>
+                    <SelectItem value="4">Outros...</SelectItem>
+                    <SelectItem value="5">...</SelectItem>
                 </SelectContent>
             </Select>
             <Button>Incluir</Button>

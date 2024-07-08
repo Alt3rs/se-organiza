@@ -7,7 +7,7 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                 <CircleDollarSign  className="text-orange-500" size={48} />  
                 <h1 className=" uppercase text-zinc-100 font-bold text-3xl">Se Organiza</h1>
             </div>
-            <div className="container items-center gap-4 w-md m-auto mt-2 rounded-xl shadow-md h-40 bg-zinc-50">
+            <div className="container items-center gap-4 w-md m-auto mt-2 rounded-xl shadow-md bg-slate-50">
                 {children}
             </div>
         </>
