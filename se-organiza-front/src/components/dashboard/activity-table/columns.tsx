@@ -2,6 +2,15 @@
 
 import { Button } from "@/components/ui/button"
 import { ColumnDef } from "@tanstack/react-table"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { DeleteIcon, EllipsisIcon, PencilLineIcon } from "lucide-react"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -63,7 +72,19 @@ export const columns: ColumnDef<Activity>[] = [
     accessorKey: "actions",
     header: "Ações",
     cell:({ row }) =>{
-      return <Button variant="destructive">Remover</Button>
+      return <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+              <EllipsisIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-red-600 gap-2"><DeleteIcon/>Deletar</DropdownMenuItem>
+            <DropdownMenuItem className="gap-2"><PencilLineIcon/>Editar</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     }
   }
 ]

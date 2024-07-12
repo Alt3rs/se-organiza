@@ -30,6 +30,7 @@ export function InsertActivityForm(){
                     <SelectItem value="5">...</SelectItem>
                 </SelectContent>
             </Select>
+            
             <Button>Incluir</Button>
         </div>
     );

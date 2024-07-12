@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CircleDollarSign } from "lucide-react";
+import { PasswordInput } from "@/components/ui/password-input";
+import { CircleDollarSign, MailIcon } from "lucide-react";
 
 export default function Dashboard(){
     return (
@@ -12,9 +13,9 @@ export default function Dashboard(){
             <CircleDollarSign className=" text-orange-400" size={48} />
             <h1 className=" uppercase text-zinc-600 font-bold text-2xl">Se Organiza</h1>
           </span>
-          <Input type="email" placeholder="Digite seu email..."/>
-          <Input type="password" placeholder="Digite sua senha..."/>
-          <Input type="password" placeholder="confirme sua senha..."/>
+          <Input type="email" placeholder="Digite seu email..." suffix={<MailIcon/>}/>
+          <PasswordInput placeholder="Digite sua senha..."/>
+          <PasswordInput placeholder="confirme sua senha..."/>
           <div className="flex flex-col items-center justify-center">
             <Button className="">Inscrever-se</Button>
           </div>
