@@ -1,7 +1,8 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { ColumnDef } from "@tanstack/react-table"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,19 +10,93 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { DeleteIcon, EllipsisIcon, PencilLineIcon } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import { DeleteIcon, EllipsisIcon, PencilLineIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Activity = {
-  id: string
-  date: Date,
-  description: string,
-  value: number,
-  typeTransaction: "expense" | "revenue", 
-  type: "bill" | "study"  | "entertainment" | "food" | "others" | ""
-}
+  id: string;
+  date: Date;
+  description: string;
+  value: number;
+  typeTransaction: "expense" | "revenue";
+  type: "bill" | "study" | "entertainment" | "food" | "others" | "";
+};
+
+const SelectEditForm = () => {
+  const [showSecondSelect, setShowSecondSelect] = useState(false);
+
+  const handleFirstSelectChange = (value: string) => {
+    setShowSecondSelect(value === '1'); // Show the second select only if the value is '1' (Saída)
+  };
+
+  return (
+    <div className="flex space-x-4">
+      <Select onValueChange={handleFirstSelectChange} >
+        <SelectTrigger className="flex-1 min-w-[200px] w-full">
+          <SelectValue placeholder="Selecione o fluxo de caixa" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="0">Entrada</SelectItem>
+          <SelectItem value="1">Saída</SelectItem>
+        </SelectContent>
+      </Select>
+
+      {showSecondSelect && (
+        <Select>
+          <SelectTrigger className="flex-1 min-w-[200px] w-full">
+            <SelectValue placeholder="Selecione o tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="contas">Contas</SelectItem>
+            <SelectItem value="educacao">Educação</SelectItem>
+            <SelectItem value="entretenimento">Entretenimento</SelectItem>
+            <SelectItem value="alimentacao">Alimentação</SelectItem>
+            <SelectItem value="outros">Outros...</SelectItem>
+            <SelectItem value="...">...</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
+    </div>
+  );
+};
+
+const EditModal = ({ isOpen, onClose, activity }: { isOpen: boolean; onClose: () => void; activity: Activity }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
+      <div className="bg-zinc-100 p-6 rounded-xl shadow-lg w-full max-w-3xl">
+        <h2 className="uppercase text-zinc-600 font-bold text-xl mb-4">Editar Atividade</h2>
+        <form className="flex flex-wrap gap-4">
+          <Input 
+            type="date" 
+            className="flex-1 min-w-[150px]" 
+            defaultValue={activity.date.toISOString().split('T')[0]} 
+          />
+          <Input 
+            type="text" 
+            placeholder="Insira a descrição da atividade..."
+            defaultValue={activity.description}
+            className="flex-1 min-w-[200px]"
+          />
+          <Input 
+            type="number" 
+            placeholder="Digite o valor"
+            defaultValue={activity.value}
+            className="flex-1 min-w-[150px]"
+          />
+          <SelectEditForm />
+          <div className="w-full flex justify-center gap-4 mt-4">
+            <Button type="button" onClick={onClose}>Cancelar</Button>
+            <Button variant="destructive" type="submit">Salvar</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export const columns: ColumnDef<Activity>[] = [
   {
@@ -30,7 +105,7 @@ export const columns: ColumnDef<Activity>[] = [
     cell: ({ row }) => {
       const aDate = row.getValue("date") as Date;
       const formatedDate = aDate.getDate() + "/" + (aDate.getMonth() + 1) + "/" + aDate.getFullYear();
-      return <p>{formatedDate}</p>
+      return <p>{formatedDate}</p>;
     }
   },
   {
@@ -42,15 +117,10 @@ export const columns: ColumnDef<Activity>[] = [
     header: "Valor",
     cell: ({ row }) => {
       const aValue = row.getValue("value") as number;
-
       const type = row.getValue("typeTransaction");
-
-      const formatedValue = aValue.toLocaleString("pt-BR",
-        { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      const valueClass = (type === "revenue") ? "text-emerald-500" : "text-red-500";
-
-      return <p className={valueClass}>R$ {formatedValue}</p>
+      const formatedValue = aValue.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const valueClass = type === "revenue" ? "text-emerald-500" : "text-red-500";
+      return <p className={valueClass}>R$ {formatedValue}</p>;
     }
   },
   {
@@ -58,10 +128,8 @@ export const columns: ColumnDef<Activity>[] = [
     header: "Tipo da Transação",
     cell: ({ row }) => {
       const type = row.getValue("typeTransaction") as string;
-
-      const valueClass = (type === "revenue") ? "text-emerald-500" : "text-red-500";
-
-      return <p className={valueClass}>{type}</p>
+      const valueClass = type === "revenue" ? "text-emerald-500" : "text-red-500";
+      return <p className={valueClass}>{type}</p>;
     }
   },
   {
@@ -71,20 +139,38 @@ export const columns: ColumnDef<Activity>[] = [
   {
     accessorKey: "actions",
     header: "Ações",
-    cell:({ row }) =>{
-      return <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
+    cell: ({ row }) => {
+      const [isModalOpen, setModalOpen] = useState(false);
+      const activity = row.original as Activity;
+
+      return (
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
               <EllipsisIcon />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600 gap-2"><DeleteIcon/>Deletar</DropdownMenuItem>
-            <DropdownMenuItem className="gap-2"><PencilLineIcon/>Editar</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="gap-2"
+                onClick={() => setModalOpen(true)}
+              >
+                <PencilLineIcon /> Editar
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-red-600 gap-2">
+                <DeleteIcon /> Deletar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <EditModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            activity={activity}
+          />
+        </div>
+      );
     }
   }
-]
+];

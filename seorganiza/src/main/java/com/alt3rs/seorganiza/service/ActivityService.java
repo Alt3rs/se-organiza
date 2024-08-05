@@ -1,6 +1,7 @@
 package com.alt3rs.seorganiza.service;
 
 import com.alt3rs.seorganiza.domain.activity.Activity;
+import com.alt3rs.seorganiza.domain.activity.type.TypeTransaction;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 import com.alt3rs.seorganiza.dto.mapper.ActivityMapper;
@@ -20,7 +21,7 @@ public class ActivityService {
     @Autowired
     private ActivityRepository repository;
 
-    public ActivityResponseDTO insertActivity(ActivityRequestDTO activityRequestDTO){
+    public ActivityResponseDTO insertActivity(ActivityRequestDTO activityRequestDTO) {
         // Converter DTO para entidade
         Activity activity = ActivityMapper.toEntity(activityRequestDTO);
         // Salvar a entidade no repositório
@@ -28,20 +29,21 @@ public class ActivityService {
         // Converter a entidade salva para DTO
         return ActivityMapper.toResponseDTO(savedActivity);
     }
-
-    public void removeActivity(String id){
-        try{
+    
+    public void removeActivity(String id) {
+        try {
             repository.deleteById(id);
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
-        } catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public ActivityResponseDTO updateActivity(String id,  ActivityRequestDTO activityRequestDTO){
+    public ActivityResponseDTO updateActivity(String id, ActivityRequestDTO activityRequestDTO) {
         // Verificar se a atividade existe
-        Activity existingActivity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        Activity existingActivity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
 
         // Criar uma nova instância da atividade com valores atualizados
         Activity updatedActivity = Activity.create(
@@ -60,14 +62,21 @@ public class ActivityService {
         return ActivityMapper.toResponseDTO(savedActivity);
     }
 
-    public List<ActivityResponseDTO> listActivities(){
+    public List<ActivityResponseDTO> listActivities() {
         return repository.findAll().stream()
                 .map(ActivityMapper::toResponseDTO)
                 .toList();
     }
 
-    public Double calculateBalance(){
-            return 0.1;
+    public Double calculateBalance() {
+        List<Activity> activities = repository.findAll();
+        if (activities.isEmpty()) {
+            return 0.0;
+        }
+        return activities.stream()
+                .mapToDouble(a -> a.getTypeTransaction() == TypeTransaction.REVENUE
+                        ? a.getValue()
+                        : -a.getValue())
+                .sum();
     }
-
 }

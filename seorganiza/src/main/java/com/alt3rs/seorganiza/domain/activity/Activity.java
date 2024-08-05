@@ -6,6 +6,7 @@ import com.alt3rs.seorganiza.domain.activity.type.TypeTransaction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Instant;
@@ -14,17 +15,24 @@ import java.util.UUID;
 @Entity(name = "Activity")
 @Table(name = "activities")
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false)
     private String id;
+    @Column(name = "date", nullable = false)
     private Instant date;
+    @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "value", nullable = false)
     private Double value;
+    @Column(name = "type_transaction", nullable = false)
     private TypeTransaction typeTransaction;
+    @Column(name = "type_expense", nullable = false)
     private TypeExpense typeExpense;
 
     private Activity(String id, Instant date, String description, Double value,
