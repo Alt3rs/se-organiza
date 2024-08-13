@@ -22,13 +22,18 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private String id;
+
     @Column(name = "date", nullable = false)
     private Instant date;
+
     @Column(name = "description", nullable = false)
     private String description;
+
     @Column(name = "value", nullable = false)
     private Double value;
+
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Type type;
 
 
@@ -60,7 +65,7 @@ public class Activity {
     }
 
     private  static void validate(String description, Double value, Type type) {
-       if (description.isBlank()) {
+       if (description == null || description.isBlank()) {
             throw new DomainException("Activity's description should not be blank.");
         } else if (description.length() < 3) {
             throw new DomainException("Activity's description should have at least 3 characters.");
