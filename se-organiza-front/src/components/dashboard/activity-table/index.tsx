@@ -7,8 +7,7 @@ const data: Activity[] = [
     date: new Date("07-25-2024"),
     description: "Pagamento da conta de luz",
     value: 250.95,
-    typeTransaction: "expense",
-    type: "bill"
+    type: "expense",
   },
 
   {
@@ -16,8 +15,7 @@ const data: Activity[] = [
     date: new Date("06-20-2024"),
     description: "Pagamento de internet",
     value: 99.90,
-    typeTransaction: "expense",
-    type: "bill"
+    type: "expense",
   },
 
   {
@@ -25,8 +23,7 @@ const data: Activity[] = [
     date: new Date("06-10-2024"),
     description: "Pagamento de aluguel",
     value: 1200.00,
-    typeTransaction: "expense",
-    type: "bill"
+    type: "expense",
   },
 
   {
@@ -34,8 +31,7 @@ const data: Activity[] = [
     date: new Date("06-05-2024"),
     description: "Sálario de julho",
     value: 2000,
-    typeTransaction: "revenue",
-    type: ""
+    type: "revenue",
   }
 ]
 

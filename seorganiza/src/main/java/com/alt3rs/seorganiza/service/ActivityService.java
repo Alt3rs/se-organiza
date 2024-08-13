@@ -1,7 +1,7 @@
 package com.alt3rs.seorganiza.service;
 
-import com.alt3rs.seorganiza.domain.activity.Activity;
-import com.alt3rs.seorganiza.domain.activity.type.TypeTransaction;
+import com.alt3rs.seorganiza.domain.Activity;
+import com.alt3rs.seorganiza.domain.type.Type;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 import com.alt3rs.seorganiza.dto.mapper.ActivityMapper;
@@ -51,8 +51,7 @@ public class ActivityService {
                 activityRequestDTO.date(),
                 activityRequestDTO.description(),
                 activityRequestDTO.value(),
-                activityRequestDTO.typeTransaction(),
-                activityRequestDTO.typeExpense()
+                activityRequestDTO.type()
         );
 
         // Salvar a atividade atualizada
@@ -74,7 +73,7 @@ public class ActivityService {
             return 0.0;
         }
         return activities.stream()
-                .mapToDouble(a -> a.getTypeTransaction() == TypeTransaction.REVENUE
+                .mapToDouble(a -> a.getType() == Type.REVENUE
                         ? a.getValue()
                         : -a.getValue())
                 .sum();

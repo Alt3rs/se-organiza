@@ -1,6 +1,6 @@
 package com.alt3rs.seorganiza.dto.mapper;
 
-import com.alt3rs.seorganiza.domain.activity.Activity;
+import com.alt3rs.seorganiza.domain.Activity;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 
@@ -15,8 +15,7 @@ public class ActivityMapper {
                 activity.getDate(),
                 activity.getDescription(),
                 activity.getValue(),
-                activity.getTypeTransaction(),
-                activity.getTypeExpense()
+                activity.getType()
         );
     }
 
@@ -30,8 +29,7 @@ public class ActivityMapper {
                 dto.date(),
                 dto.description(),
                 dto.value(),
-                dto.typeTransaction(),
-                dto.typeExpense()
+                dto.type()
         );
     }
 
@@ -45,8 +43,7 @@ public class ActivityMapper {
                 activity.getDate(),
                 activity.getDescription(),
                 activity.getValue(),
-                activity.getTypeTransaction(),
-                activity.getTypeExpense()
+                activity.getType()
         );
     }
 }

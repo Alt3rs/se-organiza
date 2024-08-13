@@ -1,6 +1,6 @@
 package com.alt3rs.seorganiza.repository;
 
-import com.alt3rs.seorganiza.domain.activity.Activity;
+import com.alt3rs.seorganiza.domain.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

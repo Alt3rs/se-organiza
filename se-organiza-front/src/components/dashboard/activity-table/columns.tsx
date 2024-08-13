@@ -20,20 +20,14 @@ export type Activity = {
   date: Date;
   description: string;
   value: number;
-  typeTransaction: "expense" | "revenue";
-  type: "bill" | "study" | "entertainment" | "food" | "others" | "";
+  type: "expense" | "revenue";
+  
 };
 
 const SelectEditForm = () => {
-  const [showSecondSelect, setShowSecondSelect] = useState(false);
-
-  const handleFirstSelectChange = (value: string) => {
-    setShowSecondSelect(value === '1'); // Show the second select only if the value is '1' (Saída)
-  };
-
   return (
     <div className="flex space-x-4">
-      <Select onValueChange={handleFirstSelectChange} >
+      <Select>
         <SelectTrigger className="flex-1 min-w-[200px] w-full">
           <SelectValue placeholder="Selecione o fluxo de caixa" />
         </SelectTrigger>
@@ -42,22 +36,6 @@ const SelectEditForm = () => {
           <SelectItem value="1">Saída</SelectItem>
         </SelectContent>
       </Select>
-
-      {showSecondSelect && (
-        <Select>
-          <SelectTrigger className="flex-1 min-w-[200px] w-full">
-            <SelectValue placeholder="Selecione o tipo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="contas">Contas</SelectItem>
-            <SelectItem value="educacao">Educação</SelectItem>
-            <SelectItem value="entretenimento">Entretenimento</SelectItem>
-            <SelectItem value="alimentacao">Alimentação</SelectItem>
-            <SelectItem value="outros">Outros...</SelectItem>
-            <SelectItem value="...">...</SelectItem>
-          </SelectContent>
-        </Select>
-      )}
     </div>
   );
 };
@@ -89,8 +67,8 @@ const EditModal = ({ isOpen, onClose, activity }: { isOpen: boolean; onClose: ()
           />
           <SelectEditForm />
           <div className="w-full flex justify-center gap-4 mt-4">
+            <Button type="submit">Salvar</Button>
             <Button type="button" onClick={onClose}>Cancelar</Button>
-            <Button variant="destructive" type="submit">Salvar</Button>
           </div>
         </form>
       </div>
@@ -117,24 +95,20 @@ export const columns: ColumnDef<Activity>[] = [
     header: "Valor",
     cell: ({ row }) => {
       const aValue = row.getValue("value") as number;
-      const type = row.getValue("typeTransaction");
+      const type = row.getValue("type");
       const formatedValue = aValue.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       const valueClass = type === "revenue" ? "text-emerald-500" : "text-red-500";
       return <p className={valueClass}>R$ {formatedValue}</p>;
     }
   },
   {
-    accessorKey: "typeTransaction",
-    header: "Tipo da Transação",
+    accessorKey: "type",
+    header: "Tipo",
     cell: ({ row }) => {
-      const type = row.getValue("typeTransaction") as string;
-      const valueClass = type === "revenue" ? "text-emerald-500" : "text-red-500";
+      const type = row.getValue("type") as string;
+      const valueClass = (type === "revenue") ? "text-emerald-500" : "text-red-500";
       return <p className={valueClass}>{type}</p>;
     }
-  },
-  {
-    accessorKey: "type",
-    header: "Tipo de gasto",
   },
   {
     accessorKey: "actions",

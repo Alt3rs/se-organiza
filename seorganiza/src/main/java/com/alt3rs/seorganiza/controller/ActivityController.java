@@ -28,7 +28,7 @@ public class ActivityController {
             @PathVariable String id,
             @RequestBody ActivityRequestDTO activityRequestDTO) {
         ActivityResponseDTO response = activityService.updateActivity(id, activityRequestDTO);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping("/{id}")
@@ -40,12 +40,12 @@ public class ActivityController {
     @GetMapping
     public ResponseEntity<List<ActivityResponseDTO>> listActivities() {
         List<ActivityResponseDTO> activities = activityService.listActivities();
-        return ResponseEntity.ok(activities);
+        return ResponseEntity.ok().body(activities);
     }
 
     @GetMapping("/balance")
     public ResponseEntity<Double> calculateBalance() {
         Double balance = activityService.calculateBalance();
-        return ResponseEntity.ok(balance);
+        return ResponseEntity.ok().body(balance);
     }
 }
