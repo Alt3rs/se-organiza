@@ -4,7 +4,6 @@ import com.alt3rs.seorganiza.exceptions.DatabaseException;
 import com.alt3rs.seorganiza.exceptions.DomainException;
 import com.alt3rs.seorganiza.exceptions.ResourceNotFoundException;
 import com.alt3rs.seorganiza.exceptions.handler.body.ExceptionResponseBody;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
