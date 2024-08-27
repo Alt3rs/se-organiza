@@ -1,13 +1,13 @@
 package com.alt3rs.seorganiza.service;
 
-import com.alt3rs.seorganiza.domain.Activity;
+import com.alt3rs.seorganiza.domain.activity.Activity;
 import com.alt3rs.seorganiza.domain.type.Type;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 import com.alt3rs.seorganiza.dto.mapper.ActivityMapper;
 import com.alt3rs.seorganiza.exceptions.DatabaseException;
 import com.alt3rs.seorganiza.exceptions.ResourceNotFoundException;
-import com.alt3rs.seorganiza.repository.ActivityRepository;
+import com.alt3rs.seorganiza.repository.activity.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;

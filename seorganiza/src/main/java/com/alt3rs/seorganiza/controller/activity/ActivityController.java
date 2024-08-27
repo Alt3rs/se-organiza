@@ -1,4 +1,4 @@
-package com.alt3rs.seorganiza.controller;
+package com.alt3rs.seorganiza.controller.activity;
 
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;

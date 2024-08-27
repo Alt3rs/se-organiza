@@ -1,6 +1,6 @@
 package com.alt3rs.seorganiza.dto.mapper;
 
-import com.alt3rs.seorganiza.domain.Activity;
+import com.alt3rs.seorganiza.domain.activity.Activity;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 

@@ -1,4 +1,4 @@
-package com.alt3rs.seorganiza.domain;
+package com.alt3rs.seorganiza.domain.activity;
 
 import com.alt3rs.seorganiza.exceptions.DomainException;
 import com.alt3rs.seorganiza.domain.type.Type;

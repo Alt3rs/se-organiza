@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 
-@ControllerAdvice
+@ControllerAdvice("com.alt3rs.seorganiza.controller.activity")
 public class ActivityControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
