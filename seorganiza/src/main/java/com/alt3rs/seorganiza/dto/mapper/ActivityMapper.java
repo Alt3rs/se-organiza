@@ -1,6 +1,7 @@
 package com.alt3rs.seorganiza.dto.mapper;
 
 import com.alt3rs.seorganiza.domain.activity.Activity;
+import com.alt3rs.seorganiza.domain.user.User;
 import com.alt3rs.seorganiza.dto.ActivityRequestDTO;
 import com.alt3rs.seorganiza.dto.ActivityResponseDTO;
 
@@ -15,12 +16,13 @@ public class ActivityMapper {
                 activity.getDate(),
                 activity.getDescription(),
                 activity.getValue(),
-                activity.getType()
+                activity.getType(),
+                activity.getUser() != null ? activity.getUser().getId() : null
         );
     }
 
     // Converte ActivityRequestDTO para Activity
-    public static Activity toEntity(ActivityRequestDTO dto) {
+    public static Activity toEntity(ActivityRequestDTO dto, User user) {
         if (dto == null) {
             return null;
         }
@@ -29,7 +31,8 @@ public class ActivityMapper {
                 dto.date(),
                 dto.description(),
                 dto.value(),
-                dto.type()
+                dto.type(),
+                user // precisa passar o objeto User
         );
     }
 
@@ -43,7 +46,8 @@ public class ActivityMapper {
                 activity.getDate(),
                 activity.getDescription(),
                 activity.getValue(),
-                activity.getType()
+                activity.getType(),
+                activity.getUser() != null ? activity.getUser().getId() : null
         );
     }
 }

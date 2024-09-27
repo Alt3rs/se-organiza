@@ -1,10 +1,13 @@
 package com.alt3rs.seorganiza.domain.user;
 
+import com.alt3rs.seorganiza.domain.activity.Activity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,4 +27,8 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    // Adiciona a relação um-para-muitos com Activity
+    @OneToMany(mappedBy = "user")
+    private List<Activity> activities;
 }

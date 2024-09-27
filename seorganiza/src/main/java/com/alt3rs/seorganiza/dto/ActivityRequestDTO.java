@@ -4,5 +4,5 @@ import com.alt3rs.seorganiza.domain.type.Type;
 
 import java.time.Instant;
 
-public record ActivityRequestDTO(Instant date, String description, Double value, Type type) {
+public record ActivityRequestDTO(Instant date, String description, Double value, Type type, String userId) {
 }

@@ -32,20 +32,20 @@ public class ActivityController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteActivity(@PathVariable String id) {
-        activityService.removeActivity(id);
+    public ResponseEntity<Void> deleteActivity(@PathVariable String id, @RequestParam String userId) {
+        activityService.removeActivity(id, userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<ActivityResponseDTO>> listActivities() {
-        List<ActivityResponseDTO> activities = activityService.listActivities();
+    public ResponseEntity<List<ActivityResponseDTO>> listActivities(@RequestParam String userId) {
+        List<ActivityResponseDTO> activities = activityService.listActivities(userId);
         return ResponseEntity.ok().body(activities);
     }
 
     @GetMapping("/balance")
-    public ResponseEntity<Double> calculateBalance() {
-        Double balance = activityService.calculateBalance();
+    public ResponseEntity<Double> calculateBalance(@RequestParam String userId) {
+        Double balance = activityService.calculateBalance(userId);
         return ResponseEntity.ok().body(balance);
     }
 }

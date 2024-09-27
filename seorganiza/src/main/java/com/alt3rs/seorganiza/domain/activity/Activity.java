@@ -1,5 +1,6 @@
 package com.alt3rs.seorganiza.domain.activity;
 
+import com.alt3rs.seorganiza.domain.user.User;
 import com.alt3rs.seorganiza.exceptions.DomainException;
 import com.alt3rs.seorganiza.domain.type.Type;
 import jakarta.persistence.*;
@@ -36,32 +37,39 @@ public class Activity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    // Adiciona a relação muitos-para-um com User
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private Activity(String id, Instant date, String description, Double value, Type type) {
+
+    private Activity(String id, Instant date, String description, Double value, Type type, User user) {
         this.id = id;
         this.date = date;
         this.description = description;
         this.value = value;
         this.type = type;
+        this.user = user;
 
     }
 
     public static Activity create(String id, Instant date, String description, Double value,
-                                  Type type) {
+                                  Type type, User user) {
         validate(description, value, type);
-        return new Activity(id, date, description, value, type);
+        return new Activity(id, date, description, value, type, user);
 
     }
 
     public static Activity with(String id, Instant date, String description,
-                                Double value, Type type) {
+                                Double value, Type type, User user) {
 
         return new Activity(
                 id,
                 date,
                 description,
                 value,
-                type);
+                type,
+                user);
     }
 
     private  static void validate(String description, Double value, Type type) {

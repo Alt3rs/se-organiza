@@ -5,8 +5,11 @@ import com.alt3rs.seorganiza.dto.LoginRequestDTO;
 import com.alt3rs.seorganiza.dto.LoginResponseDTO;
 import com.alt3rs.seorganiza.dto.RegisterRequestDTO;
 import com.alt3rs.seorganiza.dto.RegisterResponseDTO;
+import com.alt3rs.seorganiza.exceptions.InvalidCredentialsException;
+import com.alt3rs.seorganiza.exceptions.UserNotFoundException;
 import com.alt3rs.seorganiza.infra.security.TokenService;
 import com.alt3rs.seorganiza.repository.user.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +22,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-
 public class AuthController {
 
     @Autowired
@@ -32,17 +34,17 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO body){
-        User user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO body){
+        User user = this.repository.findByEmail(body.email()).orElseThrow(() -> new UserNotFoundException("User not found"));
         if(passwordEncoder.matches(body.password(), user.getPassword())){
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new LoginResponseDTO(token));
+            return ResponseEntity.ok(new LoginResponseDTO(token, user.getId()));
         }
-        return ResponseEntity.badRequest().build();
+        throw new InvalidCredentialsException("Invalid password");
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterRequestDTO body){
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody @Valid RegisterRequestDTO body){
         Optional<User> user = this.repository.findByEmail(body.email());
 
         if(user.isEmpty()) {
@@ -51,7 +53,7 @@ public class AuthController {
             newUser.setEmail(body.email());
             this.repository.save(newUser);
             String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new RegisterResponseDTO(token));
+            return ResponseEntity.ok(new RegisterResponseDTO(token, newUser.getId()));
 
         }
 

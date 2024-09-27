@@ -1,4 +1,4 @@
 package com.alt3rs.seorganiza.dto;
 
-public record LoginResponseDTO(String token) {
+public record LoginResponseDTO(String token, String userId) {
 }
