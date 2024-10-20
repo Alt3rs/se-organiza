@@ -1,10 +1,7 @@
 package com.alt3rs.seorganiza.controller.auth;
 
 import com.alt3rs.seorganiza.domain.user.User;
-import com.alt3rs.seorganiza.dto.LoginRequestDTO;
-import com.alt3rs.seorganiza.dto.LoginResponseDTO;
-import com.alt3rs.seorganiza.dto.RegisterRequestDTO;
-import com.alt3rs.seorganiza.dto.RegisterResponseDTO;
+import com.alt3rs.seorganiza.dto.*;
 import com.alt3rs.seorganiza.exceptions.InvalidCredentialsException;
 import com.alt3rs.seorganiza.exceptions.UserNotFoundException;
 import com.alt3rs.seorganiza.infra.security.TokenService;
@@ -58,5 +55,15 @@ public class AuthController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<ValidateResponseDTO> validateToken(@RequestBody @Valid ValidateRequestDTO input) {
+        // Valida o token
+        String userEmail = tokenService.validateToken(input.token());
+        boolean isValid = userEmail != null && !userEmail.isBlank();
+
+        // Retorna a resposta com a validade do token
+        return ResponseEntity.ok(new ValidateResponseDTO(isValid));
     }
 }
